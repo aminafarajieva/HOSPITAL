@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>  
+      .txt {margin: 7%;}
+      .dropbtn {background-color: #3498DB;color: white;padding: 16px;font-size: 16px;border: none;cursor: pointer;}
+      .dropbtn:hover, .dropbtn:focus {background-color: #2980B9;}
+      .dropdown {position: relative;display: inline-block;margin-left:10 px;}
+      .dropdown-content {display: none;position: absolute;background-color: #f1f1f1;min-width: 160px;overflow: auto;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 1;}
+      .dropdown-content a {color: black;padding: 12px 16px;text-decoration: none;display: block;}
+      .dropdown a:hover {background-color: #ddd;}
+      .show {display: block;}
+      ul {list-style-type: none;margin: 0;padding: 0;width: 200px;background-color: #f1f1f1;}
+      li a {display: block;color: #000;padding: 8px 16px;text-decoration: none;}
+      li a:hover {background-color: #555;color: white;}
+    </style>
+</head>
+<body>
+  <div>
+    {% if request.user.is_authenticated %}
+    <div class="dropdown" >
+      <button onclick="add()" class="dropbtn">Добавить</button>
+      <div id="myreg" class="dropdown-content">
+        <a href="{% url 'addm'%}">Главрач</a>
+        <a href="{% url 'addd'%}">Лечврач</a>
+        <a href="{% url 'addn'%}">Медсестра</a>
+        <a href="{% url 'addp'%}">Пациент</a>
+      </div>
+      <form class="dropdown" method="get" action="{% url 'logout' %}">
+        <button class="dropbtn" class="dropdown" type="submit">Выход</button>
+      </form>
+      <h3 class='txt'>Вы вошли в личный кабинет</h1>
+    {% else %}
+      <form class="dropdown" method="get" action="{% url 'register' %}">
+        <button class="dropbtn" class="dropdown" type="submit">Регистрация</button>
+      </form>
+      <form class="dropdown" method="get" action="{% url 'login' %}">
+        <button class="dropbtn" class="dropdown" type="submit">Вход</button>
+      </form>   
+      <p>Чтобы добавить данные человека, авторизуйтесь</p>  
+    {% endif %}
+    </div>
+  </div>
+  <div class="dropdown" style="text-align:center; margin-top:10%; margin-left:40%;">
+    <p>ИНФОРМАЦИЯ О БОЛЬНИЦАХ</p>
+    <button onclick="list()" class="dropbtn">Выберите больницу:</button>
+    
+    <div id="myDropdown" class="dropdown-content">{% for hospital in h %}
+      <a href="{% url 'detail' pk=hospital.pk %}">{{hospital.name}}</a>{%endfor%}
+    </div>
+  </div>
+<script>
+function list() {document.getElementById("myDropdown").classList.toggle("show");}
+function add() {document.getElementById("myreg").classList.toggle("show");}
+</script>
+</body>
+</html>
